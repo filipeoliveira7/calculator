@@ -2,36 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
 </head>
 <body>
-    <body>
-        <div class="calculator">
-          <input type="text" id="display" value="0">
-          <br>
-          <button id="clear">C</button>
-          <button id="divide">/</button>
-          <button id="multiply">*</button>
-          <button id="subtract">-</button>
-          <br>
-          <button id="seven">7</button>
-          <button id="eight">8</button>
-          <button id="nine">9</button>
-          <button id="add">+</button>
-          <br>
-          <button id="four">4</button>
-          <button id="five">5</button>
-          <button id="six">6</button>
-          <button id="equals">=</button>
-          <br>
-          <button id="one">1</button>
-          <button id="two">2</button>
-          <button id="three">3</button>
-          <button id="zero">0</button>
+    <div class="calculator">
+        <input type="text" id="lastOperationScreen" class="last-operation" readonly>
+        <input type="text" id="currentOperationScreen" class="current-operation" readonly>
+        <div class="buttons">
+            <button id="clearBtn">C</button>
+            <button id="deleteBtn">←</button>
+            <button data-operator="/">÷</button>
+            <button data-number>7</button>
+            <button data-number>8</button>
+            <button data-number>9</button>
+            <button data-operator>*</button>
+            <button data-number>4</button>
+            <button data-number>5</button>
+            <button data-number>6</button>
+            <button data-operator>-</button>
+            <button data-number>1</button>
+            <button data-number>2</button>
+            <button data-number>3</button>
+            <button data-operator>+</button>
+            <button data-number>0</button>
+            <button id="pointBtn">.</button>
+            <button id="equalsBtn">=</button>
         </div>
-      </body>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>

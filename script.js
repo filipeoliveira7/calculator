@@ -1,44 +1,137 @@
-// function to add two numbers
-function add(num1, num2) {
-  return num1 + num2;
+let firstOperand = "";
+let secondOperand = "";
+let currentOperation = null;
+let shouldResetScreen = false;
+
+const numberButtons = document.querySelectorAll("[data-number]");
+const operatorButtons = document.querySelectorAll("[data-operator]");
+const equalsButton = document.getElementById("equalsBtn");
+const clearButton = document.getElementById("clearBtn");
+const deleteButton = document.getElementById("deleteBtn");
+const pointButton = document.getElementById("pointBtn");
+const lastOperationScreen = document.getElementById("lastOperationScreen");
+const currentOperationScreen = document.getElementById(
+  "currentOperationScreen"
+);
+
+window.addEventListener("keydown", handleKeyboardInput);
+equalsButton.addEventListener("click", evaluate);
+clearButton.addEventListener("click", clear);
+deleteButton.addEventListener("click", deleteNumber);
+pointButton.addEventListener("click", appendPoint);
+
+numberButtons.forEach((button) =>
+  button.addEventListener("click", () => appendNumber(button.textContent))
+);
+
+operatorButtons.forEach((button) =>
+  button.addEventListener("click", () => setOperation(button.textContent))
+);
+
+function appendNumber(number) {
+  if (currentOperationScreen.value === "0" || shouldResetScreen) resetScreen();
+  currentOperationScreen.value += number;
 }
 
-// function to subtract two numbers
-function subtract(num1, num2) {
-  return num1 - num2;
+function resetScreen() {
+  currentOperationScreen.value = "";
+  shouldResetScreen = false;
 }
 
-// function to multiply two numbers
-function multiply(num1, num2) {
-  return num1 * num2;
+function clear() {
+  currentOperationScreen.value = "0";
+  lastOperationScreen.value = "";
+  firstOperand = "";
+  secondOperand = "";
+  currentOperation = null;
 }
 
-// function to divide two numbers
-function divide(num1, num2) {
-  if (num2 === 0) {
-    return "Error: Cannot divide by zero";
-  } else {
-    return num1 / num2;
+function appendPoint() {
+  if (shouldResetScreen) resetScreen();
+  if (currentOperationScreen.value === "") currentOperationScreen.value = "0";
+  if (currentOperationScreen.value.includes(".")) return;
+  currentOperationScreen.value += ".";
+}
+
+function deleteNumber() {
+  currentOperationScreen.value = currentOperationScreen.value
+    .toString()
+    .slice(0, -1);
+}
+
+function setOperation(operator) {
+  if (currentOperation !== null) evaluate();
+  firstOperand = currentOperationScreen.value;
+  currentOperation = operator;
+  lastOperationScreen.value = `${firstOperand} ${currentOperation}`;
+  shouldResetScreen = true;
+}
+
+function evaluate() {
+  if (currentOperation === null || shouldResetScreen) return;
+  if (currentOperation === "÷" && currentOperationScreen.value === "0") {
+    alert("You can't divide by 0!");
+    return;
+  }
+  secondOperand = currentOperationScreen.value;
+  currentOperationScreen.value = roundResult(
+    operate(currentOperation, firstOperand, secondOperand)
+  );
+  lastOperationScreen.value = `${firstOperand} ${currentOperation} ${secondOperand} =`;
+  currentOperation = null;
+}
+
+function roundResult(number) {
+  return Math.round(number * 1000) / 1000;
+}
+
+function handleKeyboardInput(e) {
+  if (e.key >= 0 && e.key <= 9) appendNumber(e.key);
+  if (e.key === ".") appendPoint();
+  if (e.key === "=" || e.key === "Enter") evaluate();
+  if (e.key === "Backspace") deleteNumber();
+  if (e.key === "Escape") clear();
+  if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/")
+    setOperation(convertOperator(e.key));
+}
+
+function convertOperator(keyboardOperator) {
+  if (keyboardOperator === "/") return "÷";
+  if (keyboardOperator === "*") return "×";
+  if (keyboardOperator === "-") return "−";
+  if (keyboardOperator === "+") return "+";
+}
+
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}
+
+function divide(a, b) {
+  return a / b;
+}
+
+function operate(operator, a, b) {
+  a = Number(a);
+  b = Number(b);
+  switch (operator) {
+    case "+":
+      return add(a, b);
+    case "−":
+      return subtract(a, b);
+    case "×":
+      return multiply(a, b);
+    case "÷":
+      if (b === 0) return null;
+      else return divide(a, b);
+    default:
+      return null;
   }
 }
-
-
-// create variables for the first number, operator, and second number
-let firstNumber = 3;
-let operator = "+";
-let secondNumber = 5;
-
-function operate(operator, num1, num2) {
-  if (operator === "+") {
-    return add(num1, num2);
-  } else if (operator === "-") {
-    return subtract(num1, num2);
-  } else if (operator === "*") {
-    return multiply(num1, num2);
-  } else if (operator === "/") {
-    return divide(num1, num2);
-  } else {
-    return "Error: Invalid operator";
-  }
-}
-
