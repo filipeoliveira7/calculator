@@ -41,6 +41,10 @@ input.current-operation {
   gap: 0.25rem;
 }
 
+.buttons .row {
+  display: contents;
+}
+
 button {
   border: none;
   background-color: #f1f1f1;
@@ -48,6 +52,10 @@ button {
   font-size: 1.25rem;
   border-radius: 3px;
   cursor: pointer;
+}
+
+button.double {
+  grid-column-end: span 2;
 }
 
 button:hover {

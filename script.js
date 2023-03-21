@@ -28,10 +28,16 @@ operatorButtons.forEach((button) =>
   button.addEventListener("click", () => setOperation(button.textContent))
 );
 
+
+
 function appendNumber(number) {
+  if (isNaN(number.trim())) return;
+
   if (currentOperationScreen.value === "0" || shouldResetScreen) resetScreen();
-  currentOperationScreen.value += number;
+  currentOperationScreen.value += number.trim();
 }
+
+
 
 function resetScreen() {
   currentOperationScreen.value = "";
@@ -60,12 +66,16 @@ function deleteNumber() {
 }
 
 function setOperation(operator) {
-  if (currentOperation !== null) evaluate();
+  if (currentOperation !== null && firstOperand !== "" && currentOperationScreen.value !== "") {
+    evaluate();
+  }
   firstOperand = currentOperationScreen.value;
   currentOperation = operator;
   lastOperationScreen.value = `${firstOperand} ${currentOperation}`;
   shouldResetScreen = true;
 }
+
+
 
 function evaluate() {
   if (currentOperation === null || shouldResetScreen) return;
@@ -91,16 +101,20 @@ function handleKeyboardInput(e) {
   if (e.key === "=" || e.key === "Enter") evaluate();
   if (e.key === "Backspace") deleteNumber();
   if (e.key === "Escape") clear();
-  if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/")
-    setOperation(convertOperator(e.key));
+  if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
+    const operator = convertOperator(e.key);
+    if (operator) setOperation(operator);
+  }
 }
+
 
 function convertOperator(keyboardOperator) {
   if (keyboardOperator === "/") return "÷";
-  if (keyboardOperator === "*") return "×";
-  if (keyboardOperator === "-") return "−";
+  if (keyboardOperator === "*") return "*"; // Change this line
+  if (keyboardOperator === "-") return "-"; // Change this line
   if (keyboardOperator === "+") return "+";
 }
+
 
 function add(a, b) {
   return a + b;
@@ -124,14 +138,17 @@ function operate(operator, a, b) {
   switch (operator) {
     case "+":
       return add(a, b);
-    case "−":
+    case "-":
       return subtract(a, b);
-    case "×":
+    case "*":
       return multiply(a, b);
-    case "÷":
+    case "/":
       if (b === 0) return null;
       else return divide(a, b);
     default:
       return null;
   }
 }
+
+
+
