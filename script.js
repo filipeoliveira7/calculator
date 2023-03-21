@@ -21,3 +21,9 @@ function divide(num1, num2) {
     return num1 / num2;
   }
 }
+
+
+// create variables for the first number, operator, and second number
+let firstNumber = 3;
+let operator = "+";
+let secondNumber = 5;
