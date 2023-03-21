@@ -142,7 +142,7 @@ function operate(operator, a, b) {
       return subtract(a, b);
     case "*":
       return multiply(a, b);
-    case "/":
+    case "÷":
       if (b === 0) return null;
       else return divide(a, b);
     default:
